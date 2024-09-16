@@ -12,4 +12,29 @@ export class AppController {
       message: this.appService.getHello()
     };
   }
+
+  @Get('/quotes')
+  @Render('index')
+  getQuotes() {
+    return {
+      message: this.appService.getQuotes()
+    };
+  }
+
+
+  @Get('/randomQuote')
+  @Render('index')
+  getRandom() {
+    return {
+      message: this.appService.getRandom()
+    };
+  }
+
+  @Get('/topAuthors')
+  @Render('index')
+  getTopAuthor() {
+    return {
+      message: this.appService.getTopAuthor()
+    };
+  }
 }
