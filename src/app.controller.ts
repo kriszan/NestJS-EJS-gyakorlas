@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -37,4 +37,21 @@ export class AppController {
       message: this.appService.getTopAuthor()
     };
   }
+
+  @Get('/quotes/:id')
+  @Render('index')
+  getId(@Param('id') id: string) {
+    return {
+      message: this.appService.getId(id)
+    };
+  }
+
+  @Get('/deleteQuote/:id')
+  @Render('index')
+  DeleteId(@Param('id') id: string) {
+    return {
+      message: this.appService.deleteId(id)
+    };
+  }
+
 }

@@ -150,7 +150,13 @@ export const quotes =
             "id": 30,
             "quote": "Whatever you can do, or dream you can, begin it.  Boldness has genius, power and magic in it.",
             "author": "Johann Wolfgang von Goethe"
-        }
+        },
+        {
+          "id": 300,
+          "quote": "Whatsoever",
+          "author": "Me"
+      }
+
     ],
     "total": 100,
     "skip": 0,

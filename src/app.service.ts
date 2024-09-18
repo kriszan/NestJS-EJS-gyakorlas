@@ -1,30 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { quotes } from './database/quotes';
 
+const fs = require("fs");
 
 @Injectable()
 export class AppService {
-  getTopAuthor() :any{
-    let tmp = quotes.quotes.map(x=>[x.author, quotes.quotes.filter(z=> z.author == x.author).length]).sort(function(a,b){return Number(b[1])-Number(a[1]);});
-    return(
-      "<ul>"+tmp.slice(0, tmp.filter(x=> x[1]==Number(tmp[0][1])).length).map(x=> "<li>"+x[0]+"</li>")+"</ul>"
-      )
-  }
-  getRandom():string {
-
-    let tmp = quotes.quotes[Math.floor(Math.random()*(quotes.quotes.length)+1)];
-    return(
-      "<p>" +tmp.author+":\t"+tmp.quote+ "</p>"
+  getTopAuthor(): any {
+    let tmp = quotes.quotes.map(x => [x.author, quotes.quotes.filter(z => z.author == x.author).length]).sort(function (a, b) { return Number(b[1]) - Number(a[1]); });
+    return (
+      "<ul>" + tmp.slice(0, tmp.filter(x => x[1] == Number(tmp[0][1])).length).map(x => "<li>" + x[0] + "</li>") + "</ul>"
     )
   }
-  getQuotes():any {
-    return(
-      "<ul>"+
-      quotes.quotes.map(x=> "<li>"+ x.author+"\t"+x.quote+"</li>")
-      +"</ul>"
+  getRandom(): string {
+
+    let tmp = quotes.quotes[Math.floor(Math.random() * (quotes.quotes.length) + 1)];
+    return (
+      "<p>" + tmp.author + ":\t" + tmp.quote + "</p>"
+    )
+  }
+  getQuotes(): any {
+    return (
+      "<ul>" +
+      quotes.quotes.map(x => "<li>" + x.author + "\t" + x.quote + "</li>")
+      + "</ul>"
     )
   }
   getHello(): string {
-    return "<p>"+'Hello World!'+"</p>";
+    return "<p>" + 'Hello World!' + "</p>";
   }
+
+  getId(id): string {
+    console.log(quotes.quotes);
+    return quotes.quotes[id - 1].author + "\t" + quotes.quotes[id - 1].quote;
+  }
+
+  deleteId(id): string {
+    if (typeof quotes.quotes.at(id - 1) !== undefined) {
+      quotes.quotes.splice(id - 1, 1);
+      quotes.quotes = JSON.parse(JSON.stringify(quotes.quotes));
+      /*fs.writeFile("/NestJS-EJS-gyakorlas/src/database/quotes.ts", quotes, (error) => {
+        if (error) {
+          console.error(error);
+          throw error;
+        }
+      })*/
+      return "ID törölve";
+    }
+    else return "A keresett Id nem található";
+  }
+
 }
