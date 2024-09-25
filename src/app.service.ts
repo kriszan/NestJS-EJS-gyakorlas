@@ -5,10 +5,30 @@ const fs = require("fs");
 
 @Injectable()
 export class AppService {
+  UpdateQuotes(text: string) {
+    return quotes.quotes.filter(x=> x.quote.includes(text)? x:"");
+  }
   getTopAuthor(): any {
-    let tmp = quotes.quotes.map(x => [x.author, quotes.quotes.filter(z => z.author == x.author).length]).sort(function (a, b) { return Number(b[1]) - Number(a[1]); });
+    //let tmp = quotes.quotes.map(x => [x.author, quotes.quotes.filter(z => z.author == x.author).length]).sort(function (a, b) { return Number(b[1]) - Number(a[1]); });
+    /*
+    interface Author{
+      nev: string,
+      elofordulas : number
+    }*/
+
+    let tmp = function(xs, key) {
+      return xs.reduce(function(rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x);
+        return rv;
+      }, {});
+    };
+
     return (
-      "<ul>" + tmp.slice(0, tmp.filter(x => x[1] == Number(tmp[0][1])).length).map(x => "<li>" + x[0] + "</li>") + "</ul>"
+      "<table>"+
+        "<thead>"+"<th>Név</th>"+"<th>DB</th>"+"</thead>"+
+          //{tmp(quotes :any,'length':string)}
+        +
+      "</table>"
     )
   }
   getRandom(): string {
@@ -19,9 +39,16 @@ export class AppService {
     )
   }
   getQuotes(): any {
+    /*let stringStuff = "";
+    quotes.quotes.forEach(e=> stringStuff+="<li>" + e.author + "\t" + e.quote+ "</li>");
     return (
       "<ul>" +
-      quotes.quotes.map(x => "<li>" + x.author + "\t" + x.quote + "</li>")
+      stringStuff
+      + "</ul>"
+    )*/
+    return (
+      "<ul>" +
+      quotes.quotes.map(e=> "<li>" + e.author + "\t" + e.quote+ "</li>")
       + "</ul>"
     )
   }
@@ -35,16 +62,17 @@ export class AppService {
   }
 
   deleteId(id): string {
-    if (typeof quotes.quotes.at(id - 1) !== undefined) {
+    if ( quotes.quotes[id - 1] !== undefined) {
       quotes.quotes.splice(id - 1, 1);
-      quotes.quotes = JSON.parse(JSON.stringify(quotes.quotes));
+      //quotes.quotes = JSON.parse(JSON.stringify(quotes.quotes));
       /*fs.writeFile("/NestJS-EJS-gyakorlas/src/database/quotes.ts", quotes, (error) => {
         if (error) {
           console.error(error);
           throw error;
         }
       })*/
-      return "ID törölve";
+      //return "ID törölve";
+      return typeof quotes.quotes[id - 1];
     }
     else return "A keresett Id nem található";
   }

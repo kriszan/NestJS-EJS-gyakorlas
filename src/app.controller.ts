@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Render } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Query, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -54,4 +54,11 @@ export class AppController {
     };
   }
 
+  @Get('/search')
+  @Render('index')
+  UpdateQuotes(@Query('text') text:string){
+    return{
+      message: this.appService.UpdateQuotes(text)
+    }
+  }
 }
